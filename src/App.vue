@@ -3,18 +3,23 @@ import { ref, computed, onMounted } from 'vue'
 import SidebarMenu from './components/SidebarMenu.vue'
 import MainHeader from './components/MainHeader.vue'
 import UnicornCard from './components/UnicornCard.vue'
-import CustomePagination from './components/CustomePagination.vue'
+import CustomePagination from './components/CustomPagination.vue'
+import LoadingIcon from './assets/icons/LoadingIcon.vue'
+import UnicornFormPopup from './components/UnicornFormPopup.vue'
+
 const unicorns = ref([])
 const isLoading = ref(true)
 const error = ref(null)
 const currentPage = ref(1)
 const itemsPerPage = 5
+const showUnicornPopup = ref(false)
+const editingUnicorn = ref(null)
+
+const apiUrl = `https://crudcrud.com/api/${import.meta.env.VITE_API_ID}/unicorns`
 
 const fetchUnicorns = async () => {
   try {
-    const response = await fetch(
-      'https://crudcrud.com/api/b6903567853741d68dd8f8cfe8fe8c54/unicorns',
-    )
+    const response = await fetch(apiUrl)
     if (!response.ok) {
       throw new Error('Network response was not ok')
     }
@@ -25,6 +30,47 @@ const fetchUnicorns = async () => {
   } finally {
     isLoading.value = false
   }
+}
+
+const saveUnicorn = async unicornData => {
+  try {
+    const method = unicornData._id ? 'PUT' : 'POST'
+    const url = unicornData._id ? `${apiUrl}/${unicornData._id}` : apiUrl
+    const response = await fetch(url, {
+      method,
+      headers: {
+        'Content-Type': 'application/json',
+      },
+      body: JSON.stringify(unicornData),
+    })
+    if (!response.ok) {
+      throw new Error(
+        `Failed to ${method === 'PUT' ? 'update' : 'create'} unicorn`,
+      )
+    }
+    if (method === 'POST') {
+      const newUnicorn = await response.json()
+      unicorns.value.push(newUnicorn)
+    } else {
+      const index = unicorns.value.findIndex(u => u._id === unicornData._id)
+      if (index !== -1) {
+        unicorns.value[index] = { ...unicorns.value[index], ...unicornData }
+      }
+    }
+    closeUnicornPopup()
+  } catch (err) {
+    error.value = err.message
+  }
+}
+
+const openEditPopup = unicorn => {
+  editingUnicorn.value = unicorn
+  showUnicornPopup.value = true
+}
+
+const closeUnicornPopup = () => {
+  showUnicornPopup.value = false
+  editingUnicorn.value = null
 }
 
 const totalPages = computed(() =>
@@ -51,10 +97,14 @@ onMounted(() => {
     <SidebarMenu />
 
     <div class="flex-1 p-6 bg-[#F6F6F6]">
-      <MainHeader />
+      <MainHeader @open-create-popup="showUnicornPopup = true" />
 
-      <!-- Unicorn List -->
-      <div v-if="isLoading" class="mt-6 text-center">Loading...</div>
+      <div
+        v-if="isLoading"
+        class="mt-6 text-center h-screen flex items-center justify-center"
+      >
+        <LoadingIcon />
+      </div>
       <div v-else-if="error" class="mt-6 text-center text-red-500">
         {{ error }}
       </div>
@@ -64,15 +114,22 @@ onMounted(() => {
           :key="unicorn._id"
           :unicorn="unicorn"
           :index="index + (currentPage - 1) * itemsPerPage"
+          @edit="openEditPopup"
         />
       </div>
 
-      <!-- Pagination -->
       <CustomePagination
         v-if="!isLoading && !error"
         :totalPages="totalPages"
         :currentPage="currentPage"
         @page-change="changePage"
+      />
+
+      <UnicornFormPopup
+        v-if="showUnicornPopup"
+        :unicorn="editingUnicorn"
+        @close="closeUnicornPopup"
+        @save="saveUnicorn"
       />
     </div>
   </div>

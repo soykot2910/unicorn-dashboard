@@ -3,6 +3,7 @@ import { ref, computed } from 'vue'
 import DeleteIcon from '@/assets/icons/DeleteIcon.vue'
 import ArrowUpIcon from '@/assets/icons/ArrowUpIcon.vue'
 import ArrowDownIcon from '@/assets/icons/ArrowDownIcon.vue'
+import { getUnicornStatus } from '@/utils/unicornUtils'
 
 const props = defineProps({
   unicorn: {
@@ -25,6 +26,27 @@ const indicatorColor = computed(() => {
   const colors = ['#FF0000', '#00FF00', '#0000FF']
   return colors[props.index % colors.length]
 })
+
+const status = computed(() => getUnicornStatus(props.unicorn.age))
+
+const statusBadgeClass = computed(() => {
+  switch (status.value) {
+    case 'Baby Unicorn':
+      return 'bg-green-100 text-green-800'
+    case 'Mature Unicorn':
+      return 'bg-blue-100 text-blue-800'
+    case 'Old Unicorn':
+      return 'bg-purple-100 text-purple-800'
+    default:
+      return 'bg-gray-100 text-gray-800'
+  }
+})
+
+const emit = defineEmits(['edit'])
+
+const editUnicorn = () => {
+  emit('edit', props.unicorn)
+}
 </script>
 
 <template>
@@ -34,7 +56,7 @@ const indicatorColor = computed(() => {
       :style="{ backgroundColor: indicatorColor }"
     ></div>
     <header class="flex justify-between items-center">
-      <dl class="flex items-center justify-between w-[50%]">
+      <dl class="flex items-center justify-between w-[60%]">
         <div class="flex flex-col items-center">
           <dt class="text-sm font-normal text-[#838383]">No</dt>
           <dd class="text-base font-bold text-[#393F4C]">
@@ -52,18 +74,29 @@ const indicatorColor = computed(() => {
           <dd class="text-base font-bold text-[#393F4C]">{{ unicorn.age }}</dd>
         </div>
         <div>
+          <dt class="text-sm font-normal text-[#838383]">Color</dt>
+          <dd class="text-base font-bold text-[#393F4C]">
+            {{ unicorn.color }}
+          </dd>
+        </div>
+        <div>
           <dt class="text-sm font-normal text-[#838383]">Status</dt>
           <dd>
             <span
-              class="bg-blue-100 text-blue-800 text-xs font-medium px-2.5 py-0.5 rounded"
-              >{{ unicorn.status }}</span
+              :class="[
+                'text-xs font-medium px-2.5 py-0.5 rounded',
+                statusBadgeClass,
+              ]"
             >
+              {{ status }}
+            </span>
           </dd>
         </div>
       </dl>
 
       <div class="flex space-x-2">
         <button
+          @click="editUnicorn"
           class="px-3 py-1 bg-gray-100 border border-[#595D62] rounded text-black text-sm font-bold"
         >
           Edit
