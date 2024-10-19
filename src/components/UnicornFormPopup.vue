@@ -68,11 +68,13 @@ watch(
 
 <template>
   <div
-    class="fixed inset-0 bg-black bg-opacity-50 flex items-center justify-center z-50"
+    class="fixed inset-0 bg-black bg-opacity-50 flex items-center justify-center z-50 p-4"
   >
-    <div class="bg-white rounded-lg p-6 w-[400px]">
+    <div class="bg-white rounded-lg p-4 sm:p-6 w-full max-w-[400px]">
       <div class="flex justify-between items-center mb-4">
-        <h2 class="text-2xl font-bold text-[#4D5959]">{{ title }}</h2>
+        <h2 class="text-xl sm:text-2xl font-bold text-[#4D5959]">
+          {{ title }}
+        </h2>
         <button @click="closePopup" class="text-gray-500 hover:text-gray-700">
           <CloseIcon />
         </button>
@@ -122,17 +124,19 @@ watch(
             placeholder="Enter unicorn color"
           />
         </div>
-        <div class="flex justify-end space-x-2">
+        <div
+          class="flex flex-col sm:flex-row justify-end space-y-2 sm:space-y-0 sm:space-x-2"
+        >
           <button
             type="button"
             @click="closePopup"
-            class="px-4 py-2 border border-gray-300 rounded-md text-[#4D5959] hover:bg-gray-100"
+            class="px-4 py-2 border border-gray-300 rounded-md text-[#4D5959] hover:bg-gray-100 w-full sm:w-auto"
           >
             Cancel
           </button>
           <button
             type="submit"
-            class="px-4 py-2 bg-[#4E46B4] text-white rounded-md hover:bg-[#3d37a3]"
+            class="px-4 py-2 bg-[#4E46B4] text-white rounded-md hover:bg-[#3d37a3] w-full sm:w-auto"
           >
             {{ buttonText }}
           </button>

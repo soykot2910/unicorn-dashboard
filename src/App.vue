@@ -101,21 +101,34 @@ const deleteUnicorn = async unicornId => {
   }
 }
 
+const isSidebarOpen = ref(false)
+
+const toggleSidebar = () => {
+  isSidebarOpen.value = !isSidebarOpen.value
+}
+
 onMounted(() => {
   fetchUnicorns()
 })
 </script>
 
 <template>
-  <div class="flex">
-    <SidebarMenu />
+  <div class="flex flex-col md:flex-row min-h-screen">
+    <SidebarMenu
+      :is-open="isSidebarOpen"
+      @close="isSidebarOpen = false"
+      class="md:w-64 md:min-h-screen"
+    />
 
-    <div class="flex-1 p-6 bg-[#F6F6F6]">
-      <MainHeader @open-unicorn-popup="openUnicornPopup()" />
+    <div class="flex-1 p-4 md:p-6 bg-[#F6F6F6]">
+      <MainHeader
+        @open-unicorn-popup="openUnicornPopup()"
+        @toggle-sidebar="toggleSidebar"
+      />
 
       <div
         v-if="isLoading"
-        class="mt-6 text-center h-screen flex items-center justify-center"
+        class="mt-6 text-center h-64 flex items-center justify-center"
       >
         <LoadingIcon />
       </div>

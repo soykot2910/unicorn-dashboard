@@ -63,31 +63,35 @@ const deleteUnicorn = () => {
       class="absolute left-0 top-0 bottom-0 w-1"
       :style="{ backgroundColor: indicatorColor }"
     ></div>
-    <header class="flex justify-between items-center">
-      <dl class="flex items-center justify-between w-[60%]">
-        <div class="flex flex-col items-center">
+    <header
+      class="flex flex-col sm:flex-row justify-between items-start sm:items-center"
+    >
+      <dl
+        class="flex flex-wrap items-start justify-between w-full sm:w-[60%] mb-4 sm:mb-0"
+      >
+        <div class="flex flex-col items-center mb-2 sm:mb-0">
           <dt class="text-sm font-normal text-[#838383]">No</dt>
           <dd class="text-base font-bold text-[#393F4C]">
             {{ props.index + 1 }}
           </dd>
         </div>
-        <div>
+        <div class="mb-2 sm:mb-0">
           <dt class="text-sm font-normal text-[#838383]">Doctor Name</dt>
           <dd class="text-base font-bold text-[#393F4C]">
             {{ unicorn.doctor_name }}
           </dd>
         </div>
-        <div>
+        <div class="mb-2 sm:mb-0">
           <dt class="text-sm font-normal text-[#838383]">Age</dt>
           <dd class="text-base font-bold text-[#393F4C]">{{ unicorn.age }}</dd>
         </div>
-        <div>
+        <div class="mb-2 sm:mb-0">
           <dt class="text-sm font-normal text-[#838383]">Color</dt>
           <dd class="text-base font-bold text-[#393F4C]">
             {{ unicorn.color }}
           </dd>
         </div>
-        <div>
+        <div class="mb-2 sm:mb-0">
           <dt class="text-sm font-normal text-[#838383]">Status</dt>
           <dd>
             <span
