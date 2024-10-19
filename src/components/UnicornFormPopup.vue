@@ -1,7 +1,7 @@
 <script setup>
 import { ref, computed, watch } from 'vue'
 import CloseIcon from '@/assets/icons/CloseIcon.vue'
-import { getUnicornStatus } from '@/utils/unicornUtils'
+//import { getUnicornStatus } from '@/utils/unicornUtils'
 
 // Props and emits
 const props = defineProps({
@@ -31,7 +31,7 @@ const title = computed(() =>
   isEditing.value ? 'Edit Unicorn' : 'Create Unicorn',
 )
 const buttonText = computed(() => (isEditing.value ? 'Update' : 'Create'))
-const status = computed(() => getUnicornStatus(age.value))
+//const status = computed(() => getUnicornStatus(age.value))
 
 // Methods
 const resetForm = () => {
@@ -81,7 +81,7 @@ const saveUnicorn = () => {
       name: name.value.trim(),
       age: parseInt(age.value),
       color: color.value.trim(),
-      status: status.value,
+      //status: status.value,
     }
     if (isEditing.value) {
       unicornData._id = props.unicorn._id
