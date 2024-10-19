@@ -58,8 +58,8 @@ const validateForm = () => {
   if (!age.value) {
     errors.value.age = 'Age is required'
     isValid = false
-  } else if (isNaN(age.value) || age.value < 0 || age.value > 1000) {
-    errors.value.age = 'Age must be a number between 0 and 1000'
+  } else if (isNaN(age.value) || age.value < 0 || age.value > 100) {
+    errors.value.age = 'Age must be a number between 0 and 100'
     isValid = false
   }
 

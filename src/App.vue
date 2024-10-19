@@ -110,6 +110,9 @@ const totalPages = computed(() =>
   Math.ceil(sortedUnicorns.value.length / itemsPerPage),
 )
 
+// Add a new computed property to check if there are unicorns
+const hasUnicorns = computed(() => unicorns.value.length > 0)
+
 // Methods
 const openUnicornPopup = (unicorn = null) => {
   editingUnicorn.value = unicorn
@@ -168,6 +171,14 @@ onMounted(fetchUnicorns)
       <div v-else-if="error" class="mt-6 text-center text-red-500">
         {{ error }}
       </div>
+      <div
+        v-else-if="!hasUnicorns"
+        class="mt-6 flex items-center justify-center h-64"
+      >
+        <p class="text-center text-gray-500 text-lg">
+          No unicorns found. Create a new unicorn to get started!
+        </p>
+      </div>
       <div v-else class="w-full mt-6 space-y-4">
         <UnicornCard
           v-for="(unicorn, index) in paginatedUnicorns"
@@ -180,7 +191,7 @@ onMounted(fetchUnicorns)
       </div>
 
       <CustomPagination
-        v-if="!isLoading && !error"
+        v-if="!isLoading && !error && hasUnicorns"
         :totalPages="totalPages"
         :currentPage="currentPage"
         @page-change="changePage"
