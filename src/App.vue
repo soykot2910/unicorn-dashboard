@@ -8,8 +8,10 @@ import CustomPagination from './components/CustomPagination.vue'
 import LoadingIcon from './assets/icons/LoadingIcon.vue'
 import UnicornFormPopup from './components/UnicornFormPopup.vue'
 
+// Initialize toast
 const toast = useToast()
 
+// State management
 const unicorns = ref([])
 const isLoading = ref(true)
 const error = ref(null)
@@ -17,19 +19,19 @@ const currentPage = ref(1)
 const itemsPerPage = 5
 const showUnicornPopup = ref(false)
 const editingUnicorn = ref(null)
-const sortField = ref('doctor_name')
+const sortField = ref('name')
 const sortOrder = ref('asc')
+const isSidebarOpen = ref(false)
 
+// API URL
 const apiUrl = `https://crudcrud.com/api/${import.meta.env.VITE_API_ID}/unicorns`
 
+// Fetch unicorns from API
 const fetchUnicorns = async () => {
   try {
     const response = await fetch(apiUrl)
-    if (!response.ok) {
-      throw new Error('Network response was not ok')
-    }
-    const data = await response.json()
-    unicorns.value = data
+    if (!response.ok) throw new Error('Network response was not ok')
+    unicorns.value = await response.json()
   } catch (err) {
     error.value = err.message
     toast.error(err.message)
@@ -38,31 +40,29 @@ const fetchUnicorns = async () => {
   }
 }
 
+// Save or update unicorn
 const saveUnicorn = async unicornData => {
   try {
     const method = unicornData._id ? 'PUT' : 'POST'
     const url = unicornData._id ? `${apiUrl}/${unicornData._id}` : apiUrl
     const response = await fetch(url, {
       method,
-      headers: {
-        'Content-Type': 'application/json',
-      },
+      headers: { 'Content-Type': 'application/json' },
       body: JSON.stringify(unicornData),
     })
-    if (!response.ok) {
+    if (!response.ok)
       throw new Error(
         `Failed to ${method === 'PUT' ? 'update' : 'create'} unicorn`,
       )
-    }
+
     if (method === 'POST') {
       const newUnicorn = await response.json()
       unicorns.value.push(newUnicorn)
       toast.success('Unicorn created successfully')
     } else {
       const index = unicorns.value.findIndex(u => u._id === unicornData._id)
-      if (index !== -1) {
+      if (index !== -1)
         unicorns.value[index] = { ...unicorns.value[index], ...unicornData }
-      }
       toast.success('Unicorn updated successfully')
     }
     closeUnicornPopup()
@@ -72,26 +72,28 @@ const saveUnicorn = async unicornData => {
   }
 }
 
-const openUnicornPopup = (unicorn = null) => {
-  editingUnicorn.value = unicorn
-  showUnicornPopup.value = true
+// Delete unicorn
+const deleteUnicorn = async unicornId => {
+  try {
+    const response = await fetch(`${apiUrl}/${unicornId}`, { method: 'DELETE' })
+    if (!response.ok) throw new Error('Failed to delete unicorn')
+    unicorns.value = unicorns.value.filter(u => u._id !== unicornId)
+    toast.success('Unicorn deleted successfully')
+  } catch (err) {
+    error.value = err.message
+    toast.error(err.message)
+  }
 }
 
-const closeUnicornPopup = () => {
-  showUnicornPopup.value = false
-  editingUnicorn.value = null
-}
-
+// Computed properties
 const sortedUnicorns = computed(() => {
   return [...unicorns.value].sort((a, b) => {
     let fieldA = a[sortField.value]
     let fieldB = b[sortField.value]
-
-    if (sortField.value === 'doctor_name') {
+    if (sortField.value === 'name') {
       fieldA = fieldA.toLowerCase()
       fieldB = fieldB.toLowerCase()
     }
-
     if (fieldA < fieldB) return sortOrder.value === 'asc' ? -1 : 1
     if (fieldA > fieldB) return sortOrder.value === 'asc' ? 1 : -1
     return 0
@@ -108,27 +110,20 @@ const totalPages = computed(() =>
   Math.ceil(sortedUnicorns.value.length / itemsPerPage),
 )
 
+// Methods
+const openUnicornPopup = (unicorn = null) => {
+  editingUnicorn.value = unicorn
+  showUnicornPopup.value = true
+}
+
+const closeUnicornPopup = () => {
+  showUnicornPopup.value = false
+  editingUnicorn.value = null
+}
+
 const changePage = page => {
   currentPage.value = page
 }
-
-const deleteUnicorn = async unicornId => {
-  try {
-    const response = await fetch(`${apiUrl}/${unicornId}`, {
-      method: 'DELETE',
-    })
-    if (!response.ok) {
-      throw new Error('Failed to delete unicorn')
-    }
-    unicorns.value = unicorns.value.filter(u => u._id !== unicornId)
-    toast.success('Unicorn deleted successfully')
-  } catch (err) {
-    error.value = err.message
-    toast.error(err.message)
-  }
-}
-
-const isSidebarOpen = ref(false)
 
 const toggleSidebar = () => {
   isSidebarOpen.value = !isSidebarOpen.value
@@ -143,9 +138,8 @@ const changeSorting = field => {
   }
 }
 
-onMounted(() => {
-  fetchUnicorns()
-})
+// Lifecycle hooks
+onMounted(fetchUnicorns)
 </script>
 
 <template>

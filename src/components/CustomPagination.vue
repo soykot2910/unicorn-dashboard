@@ -17,11 +17,7 @@ const props = defineProps({
 const emit = defineEmits(['page-change'])
 
 const pages = computed(() => {
-  const range = []
-  for (let i = 1; i <= props.totalPages; i++) {
-    range.push(i)
-  }
-  return range
+  return Array.from({ length: props.totalPages }, (_, i) => i + 1)
 })
 
 const changePage = page => {

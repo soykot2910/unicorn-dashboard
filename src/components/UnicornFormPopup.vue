@@ -3,6 +3,7 @@ import { ref, computed, watch } from 'vue'
 import CloseIcon from '@/assets/icons/CloseIcon.vue'
 import { getUnicornStatus } from '@/utils/unicornUtils'
 
+// Props and emits
 const props = defineProps({
   unicorn: {
     type: Object,
@@ -12,24 +13,27 @@ const props = defineProps({
 
 const emit = defineEmits(['close', 'save'])
 
+// Form data
 const name = ref('')
 const age = ref('')
 const color = ref('')
 
+// Form errors
 const errors = ref({
   name: '',
   age: '',
   color: '',
 })
 
+// Computed properties
 const isEditing = computed(() => !!props.unicorn)
 const title = computed(() =>
   isEditing.value ? 'Edit Unicorn' : 'Create Unicorn',
 )
 const buttonText = computed(() => (isEditing.value ? 'Update' : 'Create'))
-
 const status = computed(() => getUnicornStatus(age.value))
 
+// Methods
 const resetForm = () => {
   name.value = ''
   age.value = ''
@@ -41,6 +45,7 @@ const validateForm = () => {
   let isValid = true
   errors.value = { name: '', age: '', color: '' }
 
+  // Validate name
   if (!name.value.trim()) {
     errors.value.name = 'Name is required'
     isValid = false
@@ -49,14 +54,16 @@ const validateForm = () => {
     isValid = false
   }
 
+  // Validate age
   if (!age.value) {
     errors.value.age = 'Age is required'
     isValid = false
-  } else if (isNaN(age.value) || age.value < 0 || age.value > 100) {
-    errors.value.age = 'Age must be a number between 0 and 100'
+  } else if (isNaN(age.value) || age.value < 0 || age.value > 1000) {
+    errors.value.age = 'Age must be a number between 0 and 1000'
     isValid = false
   }
 
+  // Validate color
   if (!color.value.trim()) {
     errors.value.color = 'Color is required'
     isValid = false
@@ -71,7 +78,7 @@ const validateForm = () => {
 const saveUnicorn = () => {
   if (validateForm()) {
     const unicornData = {
-      doctor_name: name.value.trim(),
+      name: name.value.trim(),
       age: parseInt(age.value),
       color: color.value.trim(),
       status: status.value,
@@ -89,11 +96,12 @@ const closePopup = () => {
   emit('close')
 }
 
+// Watch for changes in the unicorn prop
 watch(
   () => props.unicorn,
   newUnicorn => {
     if (newUnicorn) {
-      name.value = newUnicorn.doctor_name
+      name.value = newUnicorn.name
       age.value = newUnicorn.age.toString()
       color.value = newUnicorn.color
     } else {
@@ -118,6 +126,7 @@ watch(
         </button>
       </div>
       <form @submit.prevent="saveUnicorn">
+        <!-- Name input -->
         <div class="mb-4">
           <label
             for="name"
@@ -136,6 +145,8 @@ watch(
             {{ errors.name }}
           </p>
         </div>
+
+        <!-- Age input -->
         <div class="mb-4">
           <label for="age" class="block text-sm font-medium text-[#4D5959] mb-1"
             >Age</label
@@ -154,6 +165,8 @@ watch(
             {{ errors.age }}
           </p>
         </div>
+
+        <!-- Color input -->
         <div class="mb-6">
           <label
             for="color"
@@ -172,6 +185,8 @@ watch(
             {{ errors.color }}
           </p>
         </div>
+
+        <!-- Form actions -->
         <div
           class="flex flex-col sm:flex-row justify-end space-y-2 sm:space-y-0 sm:space-x-2"
         >

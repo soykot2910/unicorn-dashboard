@@ -52,11 +52,9 @@ const editUnicorn = () => {
 }
 
 const deleteUnicorn = () => {
-  if (
-    confirm(`Are you sure you want to delete ${props.unicorn.doctor_name}?`)
-  ) {
+  if (confirm(`Are you sure you want to delete ${props.unicorn.name}?`)) {
     emit('delete', props.unicorn._id)
-    toast.info(`Deleting ${props.unicorn.doctor_name}...`)
+    toast.info(`Deleting ${props.unicorn.name}...`)
   }
 }
 </script>
@@ -82,7 +80,7 @@ const deleteUnicorn = () => {
         <div class="mb-2 sm:mb-0">
           <dt class="text-sm font-normal text-[#838383]">Doctor Name</dt>
           <dd class="text-base font-bold text-[#393F4C]">
-            {{ unicorn.doctor_name }}
+            {{ unicorn.name }}
           </dd>
         </div>
         <div class="mb-2 sm:mb-0">

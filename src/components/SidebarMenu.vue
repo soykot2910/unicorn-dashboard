@@ -30,15 +30,32 @@ watch(
   },
 )
 
-const closeSidebar = () => {
-  emit('close')
-}
+const closeSidebar = () => emit('close')
+
+const menuItems = [
+  { icon: AnalyticsIcon, text: 'Dashboard' },
+  { icon: GroupIcon, text: 'Team' },
+  { icon: FolderIcon, text: 'Project' },
+  { icon: CalendarIcon, text: 'Calendar' },
+  { icon: DocumentIcon, text: 'Documents' },
+  { icon: ProgressIndicatorIcon, text: 'Report' },
+]
+
+const teamItems = [
+  { icon: DIcon, text: 'Design' },
+  { icon: EIcon, text: 'Engineering' },
+]
+
+const reportItems = [
+  { icon: SpreadsheetIcon, text: 'Month to Date' },
+  { icon: SpreadsheetIcon, text: 'Year to Date' },
+]
 </script>
 
 <template>
   <div
     :class="[
-      'fixed inset-y-0 left-0 z-30 w-32 bg-white text-black p-4 md:p-12 transition-transform duration-300 ease-in-out transform md:relative md:translate-x-0',
+      'fixed inset-y-0 left-0 z-30 w-64 bg-white text-black p-4 md:p-12 transition-transform duration-300 ease-in-out transform md:relative md:translate-x-0',
       isVisible ? 'translate-x-0' : '-translate-x-full',
     ]"
   >
@@ -50,40 +67,10 @@ const closeSidebar = () => {
     </div>
     <nav>
       <ul class="space-y-2">
-        <li>
+        <li v-for="item in menuItems" :key="item.text">
           <a href="#" class="py-2 flex items-center">
-            <AnalyticsIcon />
-            <span class="ml-2 text-[14px] font-regular">Dashboard</span>
-          </a>
-        </li>
-        <li>
-          <a href="#" class="py-2 flex items-center">
-            <GroupIcon />
-            <span class="ml-2 text-[14px] font-regular">Team</span>
-          </a>
-        </li>
-        <li>
-          <a href="#" class="py-2 flex items-center">
-            <FolderIcon />
-            <span class="ml-2 text-[14px] font-regular">Project</span>
-          </a>
-        </li>
-        <li>
-          <a href="#" class="py-2 flex items-center">
-            <CalendarIcon />
-            <span class="ml-2 text-[14px] font-regular">Calendar</span>
-          </a>
-        </li>
-        <li>
-          <a href="#" class="py-2 flex items-center">
-            <DocumentIcon />
-            <span class="ml-2 text-[14px] font-regular">Documents</span>
-          </a>
-        </li>
-        <li>
-          <a href="#" class="py-2 flex items-center">
-            <ProgressIndicatorIcon />
-            <span class="ml-2 text-[14px] font-regular">Report</span>
+            <component :is="item.icon" />
+            <span class="ml-2 text-[14px] font-regular">{{ item.text }}</span>
           </a>
         </li>
       </ul>
@@ -92,16 +79,10 @@ const closeSidebar = () => {
     <div class="mt-6">
       <h3 class="text-[#595D62] text-[14px] font-normal mb-2">Your Teams</h3>
       <ul class="space-y-2">
-        <li>
+        <li v-for="item in teamItems" :key="item.text">
           <a href="#" class="py-2 flex items-center">
-            <DIcon />
-            <span class="ml-2 text-[14px] font-regular">Design</span>
-          </a>
-        </li>
-        <li>
-          <a href="#" class="py-2 flex items-center">
-            <EIcon />
-            <span class="ml-2 text-[14px] font-regular">Engineering</span>
+            <component :is="item.icon" />
+            <span class="ml-2 text-[14px] font-regular">{{ item.text }}</span>
           </a>
         </li>
       </ul>
@@ -110,16 +91,10 @@ const closeSidebar = () => {
     <div class="mt-6">
       <h3 class="text-[#595D62] text-[14px] font-normal mb-2">Reports</h3>
       <ul class="space-y-2">
-        <li>
+        <li v-for="item in reportItems" :key="item.text">
           <a href="#" class="py-2 flex items-center">
-            <SpreadsheetIcon />
-            <span class="ml-2 text-[14px] font-regular">Month to Date</span>
-          </a>
-        </li>
-        <li>
-          <a href="#" class="py-2 flex items-center">
-            <SpreadsheetIcon />
-            <span class="ml-2 text-[14px] font-regular">Year to Date</span>
+            <component :is="item.icon" />
+            <span class="ml-2 text-[14px] font-regular">{{ item.text }}</span>
           </a>
         </li>
       </ul>

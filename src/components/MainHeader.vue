@@ -9,17 +9,9 @@ const emit = defineEmits([
   'change-sorting',
 ])
 
-const openCreatePopup = () => {
-  emit('open-unicorn-popup')
-}
-
-const toggleSidebar = () => {
-  emit('toggle-sidebar')
-}
-
-const changeSorting = field => {
-  emit('change-sorting', field)
-}
+const openCreatePopup = () => emit('open-unicorn-popup')
+const toggleSidebar = () => emit('toggle-sidebar')
+const changeSorting = field => emit('change-sorting', field)
 </script>
 
 <template>
@@ -37,7 +29,7 @@ const changeSorting = field => {
     <div class="flex items-center space-x-4">
       <div class="flex space-x-2">
         <button
-          @click="changeSorting('doctor_name')"
+          @click="changeSorting('name')"
           class="px-3 py-1 bg-gray-100 border border-[#595D62] rounded text-black text-sm font-bold flex items-center"
         >
           Name
@@ -46,7 +38,7 @@ const changeSorting = field => {
               'ml-1',
               {
                 'transform rotate-180':
-                  sortField === 'doctor_name' && sortOrder === 'desc',
+                  sortField === 'name' && sortOrder === 'desc',
               },
             ]"
           />
