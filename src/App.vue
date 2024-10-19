@@ -45,28 +45,40 @@ const saveUnicorn = async unicornData => {
   try {
     const method = unicornData._id ? 'PUT' : 'POST'
     const url = unicornData._id ? `${apiUrl}/${unicornData._id}` : apiUrl
+
+    // Remove _id from the payload for PUT requests
+    const payload = { ...unicornData }
+    if (method === 'PUT') {
+      delete payload._id
+    }
+
     const response = await fetch(url, {
       method,
       headers: { 'Content-Type': 'application/json' },
-      body: JSON.stringify(unicornData),
+      body: JSON.stringify(payload),
     })
-    if (!response.ok)
+
+    if (!response.ok) {
       throw new Error(
         `Failed to ${method === 'PUT' ? 'update' : 'create'} unicorn`,
       )
+    }
 
     if (method === 'POST') {
       const newUnicorn = await response.json()
       unicorns.value.push(newUnicorn)
       toast.success('Unicorn created successfully')
     } else {
+      // For PUT, update the local state directly
       const index = unicorns.value.findIndex(u => u._id === unicornData._id)
-      if (index !== -1)
-        unicorns.value[index] = { ...unicorns.value[index], ...unicornData }
+      if (index !== -1) {
+        unicorns.value[index] = { ...unicorns.value[index], ...payload }
+      }
       toast.success('Unicorn updated successfully')
     }
     closeUnicornPopup()
   } catch (err) {
+    console.error(err)
     error.value = err.message
     toast.error(err.message)
   }
