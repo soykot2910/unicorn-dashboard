@@ -17,6 +17,8 @@ const currentPage = ref(1)
 const itemsPerPage = 5
 const showUnicornPopup = ref(false)
 const editingUnicorn = ref(null)
+const sortField = ref('doctor_name')
+const sortOrder = ref('asc')
 
 const apiUrl = `https://crudcrud.com/api/${import.meta.env.VITE_API_ID}/unicorns`
 
@@ -80,15 +82,31 @@ const closeUnicornPopup = () => {
   editingUnicorn.value = null
 }
 
-const totalPages = computed(() =>
-  Math.ceil(unicorns.value.length / itemsPerPage),
-)
+const sortedUnicorns = computed(() => {
+  return [...unicorns.value].sort((a, b) => {
+    let fieldA = a[sortField.value]
+    let fieldB = b[sortField.value]
+
+    if (sortField.value === 'doctor_name') {
+      fieldA = fieldA.toLowerCase()
+      fieldB = fieldB.toLowerCase()
+    }
+
+    if (fieldA < fieldB) return sortOrder.value === 'asc' ? -1 : 1
+    if (fieldA > fieldB) return sortOrder.value === 'asc' ? 1 : -1
+    return 0
+  })
+})
 
 const paginatedUnicorns = computed(() => {
   const start = (currentPage.value - 1) * itemsPerPage
   const end = start + itemsPerPage
-  return unicorns.value.slice(start, end)
+  return sortedUnicorns.value.slice(start, end)
 })
+
+const totalPages = computed(() =>
+  Math.ceil(sortedUnicorns.value.length / itemsPerPage),
+)
 
 const changePage = page => {
   currentPage.value = page
@@ -116,6 +134,15 @@ const toggleSidebar = () => {
   isSidebarOpen.value = !isSidebarOpen.value
 }
 
+const changeSorting = field => {
+  if (field === sortField.value) {
+    sortOrder.value = sortOrder.value === 'asc' ? 'desc' : 'asc'
+  } else {
+    sortField.value = field
+    sortOrder.value = 'asc'
+  }
+}
+
 onMounted(() => {
   fetchUnicorns()
 })
@@ -133,6 +160,9 @@ onMounted(() => {
       <MainHeader
         @open-unicorn-popup="openUnicornPopup()"
         @toggle-sidebar="toggleSidebar"
+        @change-sorting="changeSorting"
+        :sort-field="sortField"
+        :sort-order="sortOrder"
       />
 
       <div

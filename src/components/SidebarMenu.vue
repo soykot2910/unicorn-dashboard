@@ -38,7 +38,7 @@ const closeSidebar = () => {
 <template>
   <div
     :class="[
-      'fixed inset-y-0 left-0 z-30 w-64 bg-white text-black p-4 md:p-12 transition-transform duration-300 ease-in-out transform md:relative md:translate-x-0',
+      'fixed inset-y-0 left-0 z-30 w-32 bg-white text-black p-4 md:p-12 transition-transform duration-300 ease-in-out transform md:relative md:translate-x-0',
       isVisible ? 'translate-x-0' : '-translate-x-full',
     ]"
   >
