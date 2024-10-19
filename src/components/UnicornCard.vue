@@ -1,9 +1,12 @@
 <script setup>
 import { ref, computed } from 'vue'
+import { useToast } from 'vue-toastification'
 import DeleteIcon from '@/assets/icons/DeleteIcon.vue'
 import ArrowUpIcon from '@/assets/icons/ArrowUpIcon.vue'
 import ArrowDownIcon from '@/assets/icons/ArrowDownIcon.vue'
 import { getUnicornStatus } from '@/utils/unicornUtils'
+
+const toast = useToast()
 
 const props = defineProps({
   unicorn: {
@@ -53,6 +56,7 @@ const deleteUnicorn = () => {
     confirm(`Are you sure you want to delete ${props.unicorn.doctor_name}?`)
   ) {
     emit('delete', props.unicorn._id)
+    toast.info(`Deleting ${props.unicorn.doctor_name}...`)
   }
 }
 </script>

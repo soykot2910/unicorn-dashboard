@@ -1,11 +1,14 @@
 <script setup>
 import { ref, computed, onMounted } from 'vue'
+import { useToast } from 'vue-toastification'
 import SidebarMenu from './components/SidebarMenu.vue'
 import MainHeader from './components/MainHeader.vue'
 import UnicornCard from './components/UnicornCard.vue'
 import CustomPagination from './components/CustomPagination.vue'
 import LoadingIcon from './assets/icons/LoadingIcon.vue'
 import UnicornFormPopup from './components/UnicornFormPopup.vue'
+
+const toast = useToast()
 
 const unicorns = ref([])
 const isLoading = ref(true)
@@ -27,6 +30,7 @@ const fetchUnicorns = async () => {
     unicorns.value = data
   } catch (err) {
     error.value = err.message
+    toast.error(err.message)
   } finally {
     isLoading.value = false
   }
@@ -51,15 +55,18 @@ const saveUnicorn = async unicornData => {
     if (method === 'POST') {
       const newUnicorn = await response.json()
       unicorns.value.push(newUnicorn)
+      toast.success('Unicorn created successfully')
     } else {
       const index = unicorns.value.findIndex(u => u._id === unicornData._id)
       if (index !== -1) {
         unicorns.value[index] = { ...unicorns.value[index], ...unicornData }
       }
+      toast.success('Unicorn updated successfully')
     }
     closeUnicornPopup()
   } catch (err) {
     error.value = err.message
+    toast.error(err.message)
   }
 }
 
@@ -96,8 +103,10 @@ const deleteUnicorn = async unicornId => {
       throw new Error('Failed to delete unicorn')
     }
     unicorns.value = unicorns.value.filter(u => u._id !== unicornId)
+    toast.success('Unicorn deleted successfully')
   } catch (err) {
     error.value = err.message
+    toast.error(err.message)
   }
 }
 
