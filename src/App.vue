@@ -3,7 +3,7 @@ import { ref, computed, onMounted } from 'vue'
 import SidebarMenu from './components/SidebarMenu.vue'
 import MainHeader from './components/MainHeader.vue'
 import UnicornCard from './components/UnicornCard.vue'
-import CustomePagination from './components/CustomPagination.vue'
+import CustomPagination from './components/CustomPagination.vue'
 import LoadingIcon from './assets/icons/LoadingIcon.vue'
 import UnicornFormPopup from './components/UnicornFormPopup.vue'
 
@@ -63,7 +63,7 @@ const saveUnicorn = async unicornData => {
   }
 }
 
-const openEditPopup = unicorn => {
+const openUnicornPopup = (unicorn = null) => {
   editingUnicorn.value = unicorn
   showUnicornPopup.value = true
 }
@@ -87,6 +87,20 @@ const changePage = page => {
   currentPage.value = page
 }
 
+const deleteUnicorn = async unicornId => {
+  try {
+    const response = await fetch(`${apiUrl}/${unicornId}`, {
+      method: 'DELETE',
+    })
+    if (!response.ok) {
+      throw new Error('Failed to delete unicorn')
+    }
+    unicorns.value = unicorns.value.filter(u => u._id !== unicornId)
+  } catch (err) {
+    error.value = err.message
+  }
+}
+
 onMounted(() => {
   fetchUnicorns()
 })
@@ -97,7 +111,7 @@ onMounted(() => {
     <SidebarMenu />
 
     <div class="flex-1 p-6 bg-[#F6F6F6]">
-      <MainHeader @open-create-popup="showUnicornPopup = true" />
+      <MainHeader @open-unicorn-popup="openUnicornPopup()" />
 
       <div
         v-if="isLoading"
@@ -114,11 +128,12 @@ onMounted(() => {
           :key="unicorn._id"
           :unicorn="unicorn"
           :index="index + (currentPage - 1) * itemsPerPage"
-          @edit="openEditPopup"
+          @edit="openUnicornPopup"
+          @delete="deleteUnicorn"
         />
       </div>
 
-      <CustomePagination
+      <CustomPagination
         v-if="!isLoading && !error"
         :totalPages="totalPages"
         :currentPage="currentPage"

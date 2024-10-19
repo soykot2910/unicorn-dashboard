@@ -24,17 +24,11 @@ const buttonText = computed(() => (isEditing.value ? 'Update' : 'Create'))
 
 const status = computed(() => getUnicornStatus(age.value))
 
-watch(
-  () => props.unicorn,
-  newUnicorn => {
-    if (newUnicorn) {
-      name.value = newUnicorn.doctor_name
-      age.value = newUnicorn.age.toString()
-      color.value = newUnicorn.color
-    }
-  },
-  { immediate: true },
-)
+const resetForm = () => {
+  name.value = ''
+  age.value = ''
+  color.value = ''
+}
 
 const saveUnicorn = () => {
   if (name.value && age.value && color.value) {
@@ -52,16 +46,24 @@ const saveUnicorn = () => {
   }
 }
 
-const resetForm = () => {
-  name.value = ''
-  age.value = ''
-  color.value = ''
-}
-
 const closePopup = () => {
   resetForm()
   emit('close')
 }
+
+watch(
+  () => props.unicorn,
+  newUnicorn => {
+    if (newUnicorn) {
+      name.value = newUnicorn.doctor_name
+      age.value = newUnicorn.age.toString()
+      color.value = newUnicorn.color
+    } else {
+      resetForm()
+    }
+  },
+  { immediate: true },
+)
 </script>
 
 <template>

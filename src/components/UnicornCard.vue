@@ -16,6 +16,8 @@ const props = defineProps({
   },
 })
 
+const emit = defineEmits(['edit', 'delete'])
+
 const isOpen = ref(false)
 
 const toggleAccordion = () => {
@@ -42,10 +44,16 @@ const statusBadgeClass = computed(() => {
   }
 })
 
-const emit = defineEmits(['edit'])
-
 const editUnicorn = () => {
   emit('edit', props.unicorn)
+}
+
+const deleteUnicorn = () => {
+  if (
+    confirm(`Are you sure you want to delete ${props.unicorn.doctor_name}?`)
+  ) {
+    emit('delete', props.unicorn._id)
+  }
 }
 </script>
 
@@ -101,7 +109,7 @@ const editUnicorn = () => {
         >
           Edit
         </button>
-        <button class="p-1" aria-label="Delete">
+        <button @click="deleteUnicorn" class="p-1" aria-label="Delete">
           <DeleteIcon />
         </button>
       </div>

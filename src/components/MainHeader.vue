@@ -1,10 +1,10 @@
 <script setup>
 import BoundingBoxIcon from '@/assets/icons/BoundingBoxIcon.vue'
 
-const emit = defineEmits(['openCreatePopup'])
+const emit = defineEmits(['open-unicorn-popup'])
 
 const openCreatePopup = () => {
-  emit('openCreatePopup')
+  emit('open-unicorn-popup')
 }
 </script>
 
