@@ -7,6 +7,7 @@ import ArrowDownIcon from '@/assets/icons/ArrowDownIcon.vue'
 import { getUnicornStatus } from '@/utils/unicornUtils'
 import DeleteConfirmationModal from './DeleteConfirmationModal.vue'
 import LoadingIcon from '@/assets/icons/LoadingIcon.vue'
+import SettingIcon from '@/assets/icons/SettingIcon.vue'
 
 const toast = useToast()
 
@@ -148,6 +149,8 @@ const cancelDelete = () => {
       </div>
     </header>
 
+    <hr class="border-1 border-[#f3f4f6] my-4" />
+
     <button
       v-if="!isOpen"
       @click="toggleAccordion"
@@ -161,11 +164,13 @@ const cancelDelete = () => {
     </button>
 
     <transition name="fade">
-      <section v-if="isOpen" class="mt-4 bg-[#eae9f6] p-4 rounded-lg">
-        <div class="text-center">
-          <div class="text-purple-600 text-2xl" aria-hidden="true">⚙️</div>
-          <p class="mt-2 text-gray-600">
-            {{ unicorn.description || 'No additional details available.' }}
+      <section v-if="isOpen" class="mt-4 bg-[#eae9f6] p-4 py-7 rounded-lg">
+        <div class="flex items-center justify-center flex-col text-center">
+          <SettingIcon />
+          <p class="mt-2 text-[#8A82FB]">
+            <span>The body copy explains the empty state. </span>
+            <br />
+            <span>The icon relates to the situation.</span>
           </p>
         </div>
       </section>
@@ -265,11 +270,13 @@ const cancelDelete = () => {
     </header>
 
     <transition name="fade">
-      <section v-if="isOpen" class="mt-4 bg-[#eae9f6] p-4 rounded-lg">
-        <div class="text-center">
-          <div class="text-purple-600 text-2xl" aria-hidden="true">⚙️</div>
-          <p class="mt-2 text-gray-600">
-            {{ unicorn.description || 'No additional details available.' }}
+      <section v-if="isOpen" class="mt-4 bg-[#eae9f6] p-4 py-7 rounded-lg">
+        <div class="flex items-center justify-center flex-col text-center">
+          <SettingIcon />
+          <p class="mt-2 text-[#8A82FB]">
+            <span>The body copy explains the empty state. </span>
+            <br />
+            <span>The icon relates to the situation.</span>
           </p>
         </div>
       </section>
