@@ -1,12 +1,17 @@
 <script setup>
 import { ref, computed, watch } from 'vue'
 import CloseIcon from '@/assets/icons/CloseIcon.vue'
+import LoadingIcon from '@/assets/icons/LoadingIcon.vue'
 
 // Props and emits
 const props = defineProps({
   unicorn: {
     type: Object,
     default: null,
+  },
+  isLoading: {
+    type: Boolean,
+    default: false,
   },
 })
 
@@ -130,6 +135,8 @@ watch(
             class="w-full px-3 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-1 focus:ring-blue-500"
             :class="{ 'border-red-500': errors.name }"
             placeholder="Enter unicorn name"
+            pattern="[A-Za-z\s-]+"
+            @input="name = $event.target.value.replace(/[^A-Za-z\s-]/g, '')"
           />
           <p v-if="errors.name" class="mt-1 text-red-500 text-xs">
             {{ errors.name }}
@@ -146,7 +153,7 @@ watch(
             type="number"
             id="age"
             min="0"
-            max="1000"
+            max="100"
             class="w-full px-3 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-1 focus:ring-blue-500"
             :class="{ 'border-red-500': errors.age }"
             placeholder="Enter unicorn age"
@@ -170,6 +177,8 @@ watch(
             class="w-full px-3 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-1 focus:ring-blue-500"
             :class="{ 'border-red-500': errors.color }"
             placeholder="Enter unicorn color"
+            pattern="[A-Za-z\s-]+"
+            @input="color = $event.target.value.replace(/[^A-Za-z\s-]/g, '')"
           />
           <p v-if="errors.color" class="mt-1 text-red-500 text-xs">
             {{ errors.color }}
@@ -183,15 +192,18 @@ watch(
           <button
             type="button"
             @click="closePopup"
-            class="px-4 py-2 border border-gray-300 rounded-md text-[#4D5959] hover:bg-gray-100 w-full sm:w-auto"
+            class="px-4 py-2 border border-black rounded-md font-bold text-black hover:bg-gray-100 w-full sm:w-auto"
+            :disabled="props.isLoading"
           >
             Cancel
           </button>
           <button
             type="submit"
-            class="px-4 py-2 bg-[#4E46B4] text-white rounded-md hover:bg-[#3d37a3] w-full sm:w-auto"
+            class="px-4 py-2 bg-[#4E46B4] text-white rounded-md font-bold hover:bg-[#3d37a3] w-full sm:w-auto flex items-center justify-center"
+            :disabled="props.isLoading"
           >
-            {{ buttonText }}
+            <LoadingIcon v-if="props.isLoading" class="mr-2 h-5 w-5" />
+            {{ props.isLoading ? 'Processing...' : buttonText }}
           </button>
         </div>
       </form>

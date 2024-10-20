@@ -12,7 +12,7 @@
       cy="50"
       r="32"
       stroke-width="8"
-      stroke="#4fa94d"
+      stroke="#808080"
       stroke-dasharray="50.26548245743669 50.26548245743669"
       fill="none"
       stroke-linecap="round"

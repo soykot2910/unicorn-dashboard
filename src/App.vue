@@ -23,6 +23,11 @@ const sortField = ref('name')
 const sortOrder = ref('asc')
 const isSidebarOpen = ref(false)
 
+// loading states
+const isCreating = ref(false)
+const isEditing = ref(false)
+const isDeletingMap = ref({})
+
 // API URL
 const apiUrl = `https://crudcrud.com/api/${import.meta.env.VITE_API_ID}/unicorns`
 
@@ -43,6 +48,9 @@ const fetchUnicorns = async () => {
 // Save or update unicorn
 const saveUnicorn = async unicornData => {
   try {
+    isCreating.value = !unicornData._id
+    isEditing.value = !!unicornData._id
+
     const method = unicornData._id ? 'PUT' : 'POST'
     const url = unicornData._id ? `${apiUrl}/${unicornData._id}` : apiUrl
 
@@ -81,12 +89,16 @@ const saveUnicorn = async unicornData => {
     console.error(err)
     error.value = err.message
     toast.error(err.message)
+  } finally {
+    isCreating.value = false
+    isEditing.value = false
   }
 }
 
 // Delete unicorn
 const deleteUnicorn = async unicornId => {
   try {
+    isDeletingMap.value[unicornId] = true
     const response = await fetch(`${apiUrl}/${unicornId}`, { method: 'DELETE' })
     if (!response.ok) throw new Error('Failed to delete unicorn')
     unicorns.value = unicorns.value.filter(u => u._id !== unicornId)
@@ -94,6 +106,8 @@ const deleteUnicorn = async unicornId => {
   } catch (err) {
     error.value = err.message
     toast.error(err.message)
+  } finally {
+    isDeletingMap.value[unicornId] = false
   }
 }
 

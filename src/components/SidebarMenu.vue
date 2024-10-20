@@ -22,6 +22,7 @@ const props = defineProps({
 const emit = defineEmits(['close'])
 
 const isVisible = ref(props.isOpen)
+const selectedItem = ref('Dashboard')
 
 watch(
   () => props.isOpen,
@@ -50,12 +51,16 @@ const reportItems = [
   { icon: SpreadsheetIcon, text: 'Month to Date' },
   { icon: SpreadsheetIcon, text: 'Year to Date' },
 ]
+
+const selectItem = item => {
+  selectedItem.value = item
+}
 </script>
 
 <template>
   <div
     :class="[
-      'fixed inset-y-0 left-0 z-30 w-64 bg-white text-black p-4 md:p-12 transition-transform duration-300 ease-in-out transform md:relative md:translate-x-0',
+      'fixed inset-y-0 left-0 z-30 w-64 bg-white text-black p-4 md:p-11 transition-transform duration-300 ease-in-out transform md:relative md:translate-x-0',
       isVisible ? 'translate-x-0' : '-translate-x-full',
     ]"
   >
@@ -68,33 +73,75 @@ const reportItems = [
     <nav>
       <ul class="space-y-2">
         <li v-for="item in menuItems" :key="item.text">
-          <a href="#" class="py-2 flex items-center">
+          <a
+            href="#"
+            @click.prevent="selectItem(item.text)"
+            :class="[
+              'py-2 flex items-center px-4',
+              selectedItem === item.text ? 'bg-gray-100 rounded-md' : '',
+            ]"
+          >
             <component :is="item.icon" />
-            <span class="ml-2 text-[14px] font-regular">{{ item.text }}</span>
+            <span
+              :class="[
+                'ml-2 text-[14px]',
+                selectedItem === item.text ? 'font-bold' : 'font-regular',
+              ]"
+            >
+              {{ item.text }}
+            </span>
           </a>
         </li>
       </ul>
     </nav>
 
-    <div class="mt-6">
+    <div class="mt-6 px-4">
       <h3 class="text-[#595D62] text-[14px] font-normal mb-2">Your Teams</h3>
       <ul class="space-y-2">
         <li v-for="item in teamItems" :key="item.text">
-          <a href="#" class="py-2 flex items-center">
+          <a
+            href="#"
+            @click.prevent="selectItem(item.text)"
+            :class="[
+              'py-2 flex items-center',
+              selectedItem === item.text ? 'bg-gray-100 rounded-md' : '',
+            ]"
+          >
             <component :is="item.icon" />
-            <span class="ml-2 text-[14px] font-regular">{{ item.text }}</span>
+            <span
+              :class="[
+                'ml-2 text-[14px]',
+                selectedItem === item.text ? 'font-bold' : 'font-regular',
+              ]"
+            >
+              {{ item.text }}
+            </span>
           </a>
         </li>
       </ul>
     </div>
 
-    <div class="mt-6">
+    <div class="mt-6 px-4">
       <h3 class="text-[#595D62] text-[14px] font-normal mb-2">Reports</h3>
       <ul class="space-y-2">
         <li v-for="item in reportItems" :key="item.text">
-          <a href="#" class="py-2 flex items-center">
+          <a
+            href="#"
+            @click.prevent="selectItem(item.text)"
+            :class="[
+              'py-2 flex items-center',
+              selectedItem === item.text ? 'bg-gray-100 rounded-md' : '',
+            ]"
+          >
             <component :is="item.icon" />
-            <span class="ml-2 text-[14px] font-regular">{{ item.text }}</span>
+            <span
+              :class="[
+                'ml-2 text-[14px]',
+                selectedItem === item.text ? 'font-bold' : 'font-regular',
+              ]"
+            >
+              {{ item.text }}
+            </span>
           </a>
         </li>
       </ul>
