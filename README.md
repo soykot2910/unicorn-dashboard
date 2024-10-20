@@ -9,8 +9,7 @@ A Vue.js application for managing unicorns with CRUD operations, sorting, and pa
 3. [Design Choices](#design-choices)
 4. [Challenges and Solutions](#challenges-and-solutions)
 5. [Bonus Features](#bonus-features)
-6. [Assumptions and Decisions](#assumptions-and-decisions)
-7. [Additional Features and Improvements](#additional-features-and-improvements)
+6. [Live Demo](#live-demo)
 
 ## Installation
 
@@ -69,3 +68,7 @@ The application follows a component-based architecture using Vue.js 3 with the C
 
 1. Added form validation for creating and editing unicorns.
 2. Implemented error handling and user-friendly error messages.
+
+## Live Demo
+
+[Live Demo](https://unicorn-dashboard.netlify.app/)
