@@ -77,41 +77,44 @@ const cancelDelete = () => {
 </script>
 
 <template>
-  <article class="bg-white rounded-xl shadow-sm p-4 relative overflow-hidden">
+  <article
+    class="bg-white hidden md:block rounded-lg shadow-sm p-4 relative overflow-hidden"
+  >
     <div
-      class="absolute left-0 top-0 bottom-0 w-[6px]"
+      class="absolute left-0 top-0 bottom-0 w-1"
       :style="{ backgroundColor: indicatorColor }"
     ></div>
     <header
       class="flex flex-col sm:flex-row justify-between items-start sm:items-center"
     >
+      <div class="flex flex-col">
+        <dt class="text-sm font-normal text-[#838383] mb-2">No</dt>
+        <dd class="text-base font-bold text-[#393F4C]">
+          {{ props.index + 1 }}
+        </dd>
+      </div>
+
       <dl
-        class="flex flex-wrap items-start justify-between w-full sm:w-[60%] mb-4 sm:mb-0"
+        class="grid grid-cols-2 sm:grid-cols-4 gap-4 w-full sm:w-[80%] mb-4 sm:mb-0"
       >
-        <div class="flex flex-col items-center mb-2 sm:mb-0">
-          <dt class="text-sm font-normal text-[#838383]">No</dt>
-          <dd class="text-base font-bold text-[#393F4C]">
-            {{ props.index + 1 }}
-          </dd>
-        </div>
-        <div class="mb-2 sm:mb-0">
-          <dt class="text-sm font-normal text-[#838383]">Doctor Name</dt>
+        <div>
+          <dt class="text-sm font-normal text-[#838383] mb-2">Doctor Name</dt>
           <dd class="text-base font-bold text-[#393F4C]">
             {{ unicorn.name }}
           </dd>
         </div>
-        <div class="mb-2 sm:mb-0">
-          <dt class="text-sm font-normal text-[#838383]">Age</dt>
+        <div>
+          <dt class="text-sm font-normal text-[#838383] mb-2">Age</dt>
           <dd class="text-base font-bold text-[#393F4C]">{{ unicorn.age }}</dd>
         </div>
-        <div class="mb-2 sm:mb-0">
-          <dt class="text-sm font-normal text-[#838383]">Color</dt>
+        <div>
+          <dt class="text-sm font-normal text-[#838383] mb-2">Color</dt>
           <dd class="text-base font-bold text-[#393F4C]">
             {{ unicorn.color }}
           </dd>
         </div>
-        <div class="mb-2 sm:mb-0">
-          <dt class="text-sm font-normal text-[#838383]">Status</dt>
+        <div class="col-span-2 sm:col-span-1">
+          <dt class="text-sm font-normal text-[#838383] mb-2">Status</dt>
           <dd>
             <span
               :class="[
@@ -125,7 +128,7 @@ const cancelDelete = () => {
         </div>
       </dl>
 
-      <div class="flex justify-end items-center space-x-2">
+      <div class="flex items-center space-x-2">
         <button
           @click="editUnicorn"
           class="px-3 py-1 w-[52px] h-[32px] bg-white border-[1px] border-black rounded-lg text-black text-sm font-bold"
@@ -179,14 +182,106 @@ const cancelDelete = () => {
         <ArrowUpIcon />
       </span>
     </button>
-
-    <DeleteConfirmationModal
-      v-if="showDeleteModal"
-      :unicorn-name="unicorn.name"
-      @confirm="confirmDelete"
-      @cancel="cancelDelete"
-    />
   </article>
+
+  <article
+    class="block md:hidden bg-white rounded-xl shadow-sm p-4 relative overflow-hidden"
+  >
+    <div
+      class="absolute left-0 top-0 bottom-0 w-[6px]"
+      :style="{ backgroundColor: indicatorColor }"
+    ></div>
+    <header class="flex flex-col justify-between">
+      <dl class="grid grid-cols-2 gap-4 mb-4">
+        <div class="col-span-1">
+          <dt class="text-sm font-normal text-[#838383]">No</dt>
+          <dd class="text-base font-bold text-[#393F4C]">
+            {{ props.index + 1 }}
+          </dd>
+        </div>
+        <div class="col-span-1">
+          <dt class="text-sm font-normal text-[#838383]">Doctor Name</dt>
+          <dd class="text-base font-bold text-[#393F4C]">
+            {{ unicorn.name }}
+          </dd>
+        </div>
+        <div class="col-span-1">
+          <dt class="text-sm font-normal text-[#838383]">Age</dt>
+          <dd class="text-base font-bold text-[#393F4C]">{{ unicorn.age }}</dd>
+        </div>
+        <div class="col-span-1">
+          <dt class="text-sm font-normal text-[#838383]">Color</dt>
+          <dd class="text-base font-bold text-[#393F4C]">
+            {{ unicorn.color }}
+          </dd>
+        </div>
+        <div class="col-span-2">
+          <dt class="text-sm font-normal text-[#838383]">Status</dt>
+          <dd>
+            <span
+              :class="[
+                'text-sm font-bold px-3 py-1.5 rounded-xl',
+                statusBadgeClass,
+              ]"
+            >
+              {{ status }}
+            </span>
+          </dd>
+        </div>
+      </dl>
+
+      <div class="flex justify-between items-center w-full">
+        <button
+          @click="toggleAccordion"
+          class="text-sm font-bold text-[#595D62] flex items-center"
+          :aria-expanded="isOpen"
+        >
+          <span>{{ isOpen ? 'Hide details' : 'Show details' }}</span>
+          <span class="ml-2">
+            <ArrowDownIcon v-if="!isOpen" />
+            <ArrowUpIcon v-else />
+          </span>
+        </button>
+
+        <div class="flex items-center space-x-2">
+          <button
+            @click="editUnicorn"
+            class="px-3 py-1 w-[52px] h-[32px] bg-white border-[1px] border-black rounded-lg text-black text-sm font-bold"
+            :disabled="props.isDeleting"
+          >
+            Edit
+          </button>
+          <button
+            @click="deleteUnicorn"
+            class="p-1"
+            aria-label="Delete"
+            :disabled="props.isDeleting"
+          >
+            <LoadingIcon v-if="props.isDeleting" class="h-5 w-5" />
+            <DeleteIcon v-else />
+          </button>
+        </div>
+      </div>
+    </header>
+
+    <transition name="fade">
+      <section v-if="isOpen" class="mt-4 bg-[#eae9f6] p-4 rounded-lg">
+        <div class="text-center">
+          <div class="text-purple-600 text-2xl" aria-hidden="true">⚙️</div>
+          <p class="mt-2 text-gray-600">
+            {{ unicorn.description || 'No additional details available.' }}
+          </p>
+        </div>
+      </section>
+    </transition>
+  </article>
+
+  <DeleteConfirmationModal
+    v-if="showDeleteModal"
+    :unicorn-name="unicorn.name"
+    @confirm="confirmDelete"
+    @cancel="cancelDelete"
+  />
 </template>
 
 <style scoped>
@@ -194,6 +289,7 @@ const cancelDelete = () => {
 .fade-leave-active {
   transition: opacity 0.3s ease;
 }
+
 .fade-enter-from,
 .fade-leave-to {
   opacity: 0;

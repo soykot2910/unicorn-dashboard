@@ -1,5 +1,5 @@
 <script setup>
-import { ref, watch } from 'vue'
+import { ref } from 'vue'
 import AnalyticsIcon from '@/assets/icons/AnalyticsIcon.vue'
 import MainLogo from '@/assets/icons/MainLogo.vue'
 import GroupIcon from '@/assets/icons/GroupIcon.vue'
@@ -15,23 +15,13 @@ import CloseIcon from '@/assets/icons/CloseIcon.vue'
 const props = defineProps({
   isOpen: {
     type: Boolean,
-    default: false,
+    required: true,
   },
 })
 
 const emit = defineEmits(['close'])
 
-const isVisible = ref(props.isOpen)
 const selectedItem = ref('Dashboard')
-
-watch(
-  () => props.isOpen,
-  newValue => {
-    isVisible.value = newValue
-  },
-)
-
-const closeSidebar = () => emit('close')
 
 const menuItems = [
   { icon: AnalyticsIcon, text: 'Dashboard' },
@@ -55,16 +45,20 @@ const reportItems = [
 const selectItem = item => {
   selectedItem.value = item
 }
+
+const closeSidebar = () => {
+  emit('close')
+}
 </script>
 
 <template>
   <div
     :class="[
-      'fixed inset-y-0 left-0 z-30 w-64 bg-white text-black p-4 md:p-11 transition-transform duration-300 ease-in-out transform md:relative md:translate-x-0',
-      isVisible ? 'translate-x-0' : '-translate-x-full',
+      'fixed inset-y-0 left-0 z-30 w-64 bg-white text-black h-full lg:h-screen p-4 md:p-11 transition-all duration-300 ease-in-out transform lg:relative',
+      props.isOpen ? 'translate-x-0' : '-translate-x-full lg:translate-x-0',
     ]"
   >
-    <button @click="closeSidebar" class="absolute top-4 right-4 md:hidden">
+    <button @click="closeSidebar" class="absolute top-4 right-4 lg:hidden">
       <CloseIcon />
     </button>
     <div class="pb-6">

@@ -168,18 +168,23 @@ const changeSorting = field => {
 }
 
 // Lifecycle hooks
-onMounted(fetchUnicorns)
+onMounted(() => {
+  fetchUnicorns()
+  // Set sidebar to open by default on large screens
+  isSidebarOpen.value = window.innerWidth >= 1024
+})
 </script>
 
 <template>
-  <div class="flex flex-col md:flex-row min-h-screen">
+  <div class="flex flex-col lg:flex-row min-h-screen">
+    <!-- SidebarMenu will only be visible on large screens -->
     <SidebarMenu
       :is-open="isSidebarOpen"
       @close="isSidebarOpen = false"
-      class="md:w-64 md:min-h-screen"
+      class="lg:block"
     />
 
-    <div class="flex-1 p-4 md:p-6 bg-[#F6F6F6]">
+    <div class="flex-1 p-4 lg:p-6 bg-[#F6F6F6]">
       <MainHeader
         @open-unicorn-popup="openUnicornPopup()"
         @toggle-sidebar="toggleSidebar"
