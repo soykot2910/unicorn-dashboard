@@ -199,8 +199,12 @@ onMounted(() => {
       >
         <LoadingIcon />
       </div>
-      <div v-else-if="error" class="mt-6 text-center text-red-500">
-        {{ error }}
+      <div
+        v-else-if="error"
+        class="mt-56 flex items-center justify-center text-center text-red-500"
+      >
+        {{ error }} data, Crudcrud api token expired, please update the token in
+        .env file
       </div>
       <div
         v-else-if="!hasUnicorns"
