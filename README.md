@@ -119,4 +119,67 @@ Deployment features:
 
 ## Docker Deployment
 
-### Build the Docker image
+### Prerequisites
+
+- Docker installed on your machine
+- Docker Compose installed on your machine
+
+### Development Setup
+
+1. **Build and start the development container:**
+
+   ```bash
+   docker-compose up --build
+   ```
+
+   This will start the development server with hot-reload at `http://localhost:5173`
+
+2. **Stop the development container:**
+   ```bash
+   docker-compose down
+   ```
+
+### Production Deployment
+
+1. **Build the production image:**
+
+   ```bash
+   docker build -t unicorn-dashboard:latest .
+   ```
+
+2. **Run the production container:**
+
+   ```bash
+   docker run -d -p 80:80 --name unicorn-dashboard unicorn-dashboard:latest
+   ```
+
+   The application will be available at `http://localhost`
+
+3. **Stop the production container:**
+   ```bash
+   docker stop unicorn-dashboard
+   docker rm unicorn-dashboard
+   ```
+
+### Docker Commands Reference
+
+- **View logs:**
+
+  ```bash
+  docker logs unicorn-dashboard
+  ```
+
+- **Shell access to container:**
+
+  ```bash
+  docker exec -it unicorn-dashboard sh
+  ```
+
+- **Check container status:**
+  ```bash
+  docker ps
+  ```
+
+### Environment Variables
+
+When running the Docker container, you can pass environment variables using the `-e` flag:
