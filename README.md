@@ -13,6 +13,7 @@ A Vue.js application for managing unicorns with CRUD operations, sorting, and pa
 7. [Form Validation](#form-validation)
 8. [Deployment](#deployment)
 9. [Challenges and Solutions](#challenges-and-solutions)
+10. [Docker Deployment](#docker-deployment)
 
 ## Installation
 
@@ -116,52 +117,6 @@ Deployment features:
 - Build optimization
 - Error tracking
 
-## Challenges and Solutions
+## Docker Deployment
 
-1. **Challenge**: Complex state management
-   **Solution**: Implemented Pinia store with computed properties
-
-2. **Challenge**: Testing async operations
-   **Solution**: Used Vitest mocking and async utilities
-
-3. **Challenge**: Form validation
-   **Solution**: Created reusable validation logic with real-time feedback
-
-4. **Challenge**: API error handling
-   **Solution**: Comprehensive error handling with user feedback
-
-## Bonus Challenges Completed
-
-### 1. State Management ✅
-
-- Implemented Pinia for centralized state management
-- Created dedicated unicorn store with actions and getters
-- Managed loading states, pagination, and sorting through store
-
-### 2. Testing ✅
-
-- Unit tests for store using Vitest `javascript
-- Component tests with Vue Test Utils
-- API integration tests
-
-### 3. Error Handling ✅
-
-- Comprehensive API error handling
-- User-friendly error messages using vue-toastification
-- Loading states for better UX
-
-### 4. Form Validation ✅
-
-- Client-side validation for all form fields
-- Real-time validation feedback
-- Input constraints:
-  - Name: 2-50 characters, letters only
-  - Age: 0-100, numeric
-  - Color: 3-20 characters, letters only
-
-### 5. Deployment ✅
-
-- Deployed to Netlify
-- Live demo: [Unicorn Dashboard](https://unicorn-dashboard.netlify.app/)
-- Environment variable management
-- Continuous deployment from main branch
+### Build the Docker image
