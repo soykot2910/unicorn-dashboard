@@ -7,9 +7,12 @@ A Vue.js application for managing unicorns with CRUD operations, sorting, and pa
 1. [Installation](#installation)
 2. [Application Structure](#application-structure)
 3. [Design Choices](#design-choices)
-4. [Challenges and Solutions](#challenges-and-solutions)
-5. [Bonus Features](#bonus-features)
-6. [Live Demo](#live-demo)
+4. [State Management](#state-management)
+5. [Testing](#testing)
+6. [Error Handling](#error-handling)
+7. [Form Validation](#form-validation)
+8. [Deployment](#deployment)
+9. [Challenges and Solutions](#challenges-and-solutions)
 
 ## Installation
 
@@ -53,22 +56,112 @@ The application follows a component-based architecture using Vue.js 3 with the C
 4. **Vue-toastification**: Implemented for user-friendly notifications.
 5. **Responsive design**: Ensures the application works well on various screen sizes.
 
+## State Management
+
+The application uses Pinia for state management with the following features:
+
+1. **Centralized Store**: All unicorn-related state and operations are managed in a dedicated store
+2. **Reactive State**: Utilizes Vue's reactivity system through Pinia
+3. **Actions**: Async operations for CRUD operations
+4. **Getters**: Computed properties for sorted and paginated data
+5. **Modular**: Easy to extend and maintain
+
+Key store features:
+
+- State management for unicorns data
+- Loading and error states
+- Sorting and pagination logic
+- CRUD operations
+- Computed properties for filtered data
+
+## Testing
+
+Comprehensive test suite using Vitest and Vue Test Utils:
+
+1. **Store Tests:**
+
+   - State mutations
+   - Action responses
+   - Getter computations
+   - Error handling
+
+2. **Component Tests:**
+
+   - Form validation
+   - Event emissions
+   - User interactions
+   - Conditional rendering
+
+3. **API Tests:**
+   - Request handling
+   - Error scenarios
+   - Response parsing
+
+## Error Handling
+
+- Network error detection
+- User-friendly messages
+- Loading states
+- Retry mechanisms
+
+## Deployment
+
+The application is deployed and available at:
+[Live Demo](https://unicorn-dashboard.netlify.app/)
+
+Deployment features:
+
+- Continuous deployment from main branch
+- Environment variable management
+- Build optimization
+- Error tracking
+
 ## Challenges and Solutions
 
-1. **Challenge**: Implementing sorting and pagination with the API.
-   **Solution**: Implemented client-side sorting and pagination to improve performance and reduce API calls.
+1. **Challenge**: Complex state management
+   **Solution**: Implemented Pinia store with computed properties
 
-2. **Challenge**: Managing form state for both create and edit operations.
-   **Solution**: Created a reusable `UnicornFormPopup` component that handles both create and edit functionalities.
+2. **Challenge**: Testing async operations
+   **Solution**: Used Vitest mocking and async utilities
 
-3. **Challenge**: Responsive design for mobile devices.
-   **Solution**: Utilized Tailwind CSS classes and custom media queries to ensure a smooth mobile experience.
+3. **Challenge**: Form validation
+   **Solution**: Created reusable validation logic with real-time feedback
 
-## Bonus Features
+4. **Challenge**: API error handling
+   **Solution**: Comprehensive error handling with user feedback
 
-1. Added form validation for creating and editing unicorns.
-2. Implemented error handling and user-friendly error messages.
+## Bonus Challenges Completed
 
-## Live Demo
+### 1. State Management ✅
 
-[Live Demo](https://unicorn-dashboard.netlify.app/)
+- Implemented Pinia for centralized state management
+- Created dedicated unicorn store with actions and getters
+- Managed loading states, pagination, and sorting through store
+
+### 2. Testing ✅
+
+- Unit tests for store using Vitest `javascript
+- Component tests with Vue Test Utils
+- API integration tests
+
+### 3. Error Handling ✅
+
+- Comprehensive API error handling
+- User-friendly error messages using vue-toastification
+- Loading states for better UX
+
+### 4. Form Validation ✅
+
+- Client-side validation for all form fields
+- Real-time validation feedback
+- Input constraints:
+  - Name: 2-50 characters, letters only
+  - Age: 0-100, numeric
+  - Color: 3-20 characters, letters only
+
+### 5. Deployment ✅
+
+- Deployed to Netlify
+- Live demo: [Unicorn Dashboard](https://unicorn-dashboard.netlify.app/)
+- Environment variable management
+- Continuous deployment from main branch
