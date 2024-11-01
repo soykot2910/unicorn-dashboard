@@ -10,10 +10,9 @@ A Vue.js application for managing unicorns with CRUD operations, sorting, and pa
 4. [State Management](#state-management)
 5. [Testing](#testing)
 6. [Error Handling](#error-handling)
-7. [Form Validation](#form-validation)
-8. [Deployment](#deployment)
-9. [Challenges and Solutions](#challenges-and-solutions)
-10. [Docker Deployment](#docker-deployment)
+7. [Deployment](#deployment)
+8. [Challenges and Solutions](#challenges-and-solutions)
+9. [Docker Deployment](#docker-deployment)
 
 ## Installation
 
