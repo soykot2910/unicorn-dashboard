@@ -5,12 +5,19 @@ import vue from '@vitejs/plugin-vue'
 
 // https://vite.dev/config/
 export default defineConfig({
-  plugins: [
-    vue(),
-  ],
+  plugins: [vue()],
   resolve: {
-    alias: {
-      '@': fileURLToPath(new URL('./src', import.meta.url))
-    }
-  }
+    alias: [
+      {
+        find: '@',
+        replacement: fileURLToPath(new URL('./src', import.meta.url)),
+      },
+    ],
+  },
+  test: {
+    globals: true,
+    environment: 'jsdom',
+    include: ['./tests/**/*.spec.js'],
+    setupFiles: ['./tests/setup.js'],
+  },
 })
